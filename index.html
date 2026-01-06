@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1534 50%, #2d1b3d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #e0e0e0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.15) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 191, 255, 0.1) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(30px, 30px) rotate(180deg); }
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .avatar-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 25px;
+            position: relative;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 50px rgba(102, 126, 234, 0.6); }
+        }
+
+        .status-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 25px;
+            height: 25px;
+            background: #10b981;
+            border-radius: 50%;
+            border: 4px solid rgba(26, 26, 46, 0.9);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            color: #a0aec0;
+            font-weight: 300;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #667eea, transparent);
+            margin: 40px 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateX(5px);
+        }
+
+        .info-label {
+            font-size: 0.85em;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 1.2em;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .skills-section {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 25px;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .skill-tag:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.4), rgba(118, 75, 162, 0.4));
+            border-color: rgba(102, 126, 234, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .progress-section {
+            margin-top: 30px;
+        }
+
+        .progress-item {
+            margin-bottom: 25px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-name {
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .progress-percentage {
+            color: #a0aec0;
+            font-size: 0.9em;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 1s ease;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="avatar-container">
+                <div class="avatar">JD</div>
+                <div class="status-badge"></div>
+            </div>
+            <h1>Priyobrata Mondal</h1>
+            <p class="subtitle">@neutrino</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-label">Student ID</div>
+                <div class="info-value">CS2024-1234</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">Email</div>
+                <div class="info-value">priyobrata.2212@gmail.com</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">Year</div>
+                <div class="info-value">3rd Year</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">Department</div>
+                <div class="info-value">Computer Science</div>
+            </div>
+        </div>
+
+        <div class="skills-section">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-container">
+                <div class="skill-tag">Python</div>
+                <div class="skill-tag">JavaScript</div>
+                <div class="skill-tag">React</div>
+                <div class="skill-tag">Node.js</div>
+                <div class="skill-tag">SQL</div>
+                <div class="skill-tag">Git</div>
+                <div class="skill-tag">Machine Learning</div>
+                <div class="skill-tag">Docker</div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <h2 class="section-title">Course Progress</h2>
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Data Structures & Algorithms</span>
+                    <span class="progress-percentage">92%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 92%"></div>
+                </div>
+            </div>
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Web Development</span>
+                    <span class="progress-percentage">88%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 88%"></div>
+                </div>
+            </div>
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Database Systems</span>
+                    <span class="progress-percentage">95%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 95%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
